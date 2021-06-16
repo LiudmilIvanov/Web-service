@@ -12,33 +12,40 @@
     <a class="navbar-brand"></a>
     <form class="form-inline">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      <button class="btn btn-outline-success my-2 my-sm-1" type="submit">Create user</button>
+    
       <input id="submit" type="button" value="Check">
+      <input id="submit-user" type="button" value="Add user">
+
 
     </form>
   </nav>
 
 
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody id="tbody">
-      <tr>
-        <td></td>
-        <td></td>
-        <td>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+ 
  
   <body>
+      <div class="input">
+
+
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr>
+            <td></td>
+            <td></td>
+            <td>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     <script>
         let tbodyElement = document.getElementById('tbody');
         let searchBtn = document.getElementById('submit');
@@ -82,11 +89,8 @@
                         tdElement.innerHTML = '';
                         tdElementMail.innerHTML = '';
                         tdElemenBtn.innerHTML = '';
+                      } 
 
-
-                      } else {
-
-                      }
                     });
 
                     });
@@ -97,6 +101,45 @@
           
         }
 
+        function addUser() {
+            let addElement = document.getElementById('submit-user');
+            let divElement = document.querySelector('.input');
+            let url = `http://localhost:8080/users`
+
+            addElement.addEventListener('click', function(){
+                let userInputElement = document.createElement('div');
+
+                userInputElement.innerHTML = "<div class='form-group'><label for='usr'>Name:</label><input type='text' class='form-control' id='usr'></div><div class='form-group'><label for='pwd'>Email:</label><input type='email' class='form-control' id='pwd'><input id='submit-confirm' type='button' value='Confirm'></div>";
+
+               
+
+
+                let confirmElement = document.getElementById('submit-confirm');
+                confirmElement.addEventListener('click', function() {
+                  let usernameInputEl = document.getElementById('usr');
+                  let emailInputEl = document.getElementById('pwd');
+
+                divElement.appendChild(userInputElement);
+                divElement.appendChild(emailInputEl);
+
+                  fetch(url, {
+                        method: 'POST', 
+                        mode: 'cors',
+                        headers: {
+                        'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({username: usernameInputEl.value, email: emailInputEl.value})      
+                        });
+                      
+                      
+                        usernameInputEl.value = '';
+                        emailInputEl.value = '';
+                    });
+                });
+            
+        }
+
+        addUser();
         viewElements();
     </script>
 </body>

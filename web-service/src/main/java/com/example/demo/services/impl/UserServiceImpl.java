@@ -39,6 +39,11 @@ public class UserServiceImpl implements UserService{
 		
 		userRepository.deleteById(id);
 	}
+
+	@Override
+	public void save(UserServiceModel userServiceModel) {
+		userRepository.save(modelMapper.map(userServiceModel, UserEntity.class));
+	}
 	
 	
 	

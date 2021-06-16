@@ -9,4 +9,6 @@ public interface UserService {
 	List<UserServiceModel> findAllByName(String name);
 	
 	public void deleteUser(Long id);
+
+	public void save(UserServiceModel userServiceModel);
 }
