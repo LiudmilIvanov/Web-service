@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Document</title>
+    
+</head>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <a class="navbar-brand"></a>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-success my-2 my-sm-1" type="submit">Create user</button>
+      <input id="submit" type="button" value="Check">
+
+    </form>
+  </nav>
+
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr>
+        <td></td>
+        <td></td>
+        <td>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+ 
+  <body>
+    <script>
+        let tbodyElement = document.getElementById('tbody');
+        let searchBtn = document.getElementById('submit');
+        let inputElement = document.querySelector('.form-inline input');
+        
+
+        function  viewElements() {
+            searchBtn.addEventListener('click', function() {
+                let userUrl = `http://localhost:8080/users/${inputElement.value}`;
+               
+                fetch(userUrl)
+                .then((res) => res.json())
+                .then((data) =>{
+                    console.log(data)
+                    data.forEach(element => {
+                     let trElement = document.createElement('tr');
+                        
+                     let tdElement = document.createElement('td');
+                     tdElement.innerHTML = element.username;
+
+                     let tdElementMail = document.createElement('td');
+                     tdElementMail.innerHTML = element.email;
+
+                     let tdElemenBtn = document.createElement('td');
+                     tdElemenBtn.innerHTML = `<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span> Trash </button>`;
+                     
+                     
+                     tbodyElement.appendChild(trElement);
+                     trElement.appendChild(tdElement);
+                     trElement.appendChild(tdElementMail);
+                     trElement.appendChild(tdElemenBtn);
+
+                     let deleterUrl = `http://localhost:8080/users/${element.id}`;
+
+
+                     tdElemenBtn.addEventListener('click', function() {
+                      let answer = window.confirm('Would you like to proceed deleting that record?');
+                      if (answer) {
+                        fetch(deleterUrl, {method: 'DELETE'});
+
+                        tdElement.innerHTML = '';
+                        tdElementMail.innerHTML = '';
+                        tdElemenBtn.innerHTML = '';
+
+
+                      } else {
+
+                      }
+                    });
+
+                    });
+                });
+            });
+        };
+        function deleteElements() {
+          
+        }
+
+        viewElements();
+    </script>
+</body>
+</html>
